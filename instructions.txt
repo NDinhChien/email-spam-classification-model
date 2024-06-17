@@ -1,0 +1,11 @@
+
+Chạy web cục bộ (run locally)
+  B1: Cài đặt NodeJs
+  B2: Cài đặt pnpm (Để cài các thư viện cho nhanh)
+  B3: Cài đặt các thư viện cho frontend
+      npm install -g pnpm (Pnpm Cài đặt các thư viện nhanh hơn)
+  B4: Chạy frontend server
+      Gõ npm run start -> Truy cập http://localhost:4040
+
+Chạy Server
+  Chạy email-spam-classification.jpynb trên Google Colab 

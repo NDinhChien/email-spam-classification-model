@@ -1,0 +1,31 @@
+﻿--Header
+[Group 12]                                       [Test Model] (to Model.tsx)
+
+
+-- Intro 
+              Final Semester Project - Group 12:
+Build a simple NLP Model applied Transformer architecture 
+              Email Spam Classifiction 
+
+-- ClassInfo (Table 1 cột, n dòng)         
+           Class         :  Học Thống Kê - CQ2021/22 
+           Instructors   :  Ts. Ngô Minh Nhựt 
+                            Ths. Lê Long Quốc 
+                    
+
+-- Group Info
+           Group 12's Members:
+                    1. Nguyễn Đình Chiến - 20120441
+                    2. Việt Nguyễn       - 2012xxxx
+                    3. Trung Sơn         - 2012xxxx 
+                    4. Huỳnh Huy         - 2112xxxx
+
+-- More Info
+           Deploy the project locally?
+                    1. Clone the project groupxx [...] 
+                    2. Run email-spam-classification.ipynnb on Google Colab [Link]
+                    3. Run the web server: npm run start
+
+           
+           
+           

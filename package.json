@@ -1,0 +1,107 @@
+{
+  "name": "email-spam-classification",
+  "author": "",
+  "license": "MIT",
+  "private": true,
+  "version": "1.0.0",
+  "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@mui/icons-material": "^5.15.20",
+    "@mui/material": "^5.15.20",
+    "axios": "^1.7.2",
+    "axios-hooks": "^5.0.2",
+    "formik": "^2.4.6",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.23.1",
+    "yup": "^1.4.0"
+  },
+  "scripts": {
+    "start": "vite --port 4040 --open",
+    "build": "vite build",
+    "test": "jest --watch --config=jest.config.js",
+    "cy:open": "cypress open",
+    "cy:run": "cypress run",
+    "lint": "eslint --ignore-path .gitignore . && stylelint **/*.scss",
+    "lint:fix": "eslint --fix --ignore-path .gitignore . && stylelint --fix **/*.scss",
+    "preview": "vite preview"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest",
+      "eslint-config-codely/typescript"
+    ],
+    "parserOptions": {
+      "project": [
+        "./tsconfig.json"
+      ]
+    },
+    "settings": {
+      "import/resolver": {
+        "node": {
+          "extensions": [
+            ".js",
+            ".jsx",
+            ".ts",
+            ".tsx"
+          ]
+        }
+      }
+    },
+    "overrides": [
+      {
+        "files": [
+          "**/tests/e2e/**/*.spec.ts"
+        ],
+        "rules": {
+          "testing-library/await-async-query": 0,
+          "@typescript-eslint/no-unsafe-member-access": 0,
+          "@typescript-eslint/no-unsafe-call": 0,
+          "testing-library/prefer-screen-queries": 0
+        }
+      }
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@swc/core": "^1.5.25",
+    "@swc/jest": "^0.2.36",
+    "@testing-library/cypress": "^10.0.2",
+    "@testing-library/jest-dom": "^6.4.5",
+    "@testing-library/react": "^16.0.0",
+    "@testing-library/user-event": "^14.5.2",
+    "@types/jest": "^29.5.12",
+    "@types/node": "^20.14.2",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.0",
+    "cypress": "^13.11.0",
+    "eslint": "^9.4.0",
+    "eslint-config-codely": "^3.1.4",
+    "eslint-config-react-app": "^7.0.1",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "jest-transform-stub": "^2.0.0",
+    "sass": "^1.77.4",
+    "stylelint": "^16.6.1",
+    "stylelint-config-rational-order": "^0.1.2",
+    "stylelint-config-standard-scss": "^13.1.0",
+    "stylelint-order": "^6.0.4",
+    "typescript": "^5.4.5",
+    "vite": "^5.2.13"
+  }
+}

@@ -1,0 +1,35 @@
+
+
+
+
+
+                        
+       Emails          5               Catagory
+
+[                         ]         Spam (90%) Green
+[                         ]
+[                         ]
+                    
+
+[                         ]         Ham (55%) Read
+           
+
+[                         ]         Spam
+            
+
+[                         ]         Spam
+            
+
+[                         ]
+                                    Spam
+
+[                         ]
+                     (+) (-)        Spam
+
+                  [Let's Predict/ Predicting.../ Re-predict]
+
+                  (Xoay) [5 Spam, 5 Ham, 5 Unknown, ]
+                   
+import HandymanRoundedIcon from '@mui/icons-material/HandymanRounded';
+
+     
