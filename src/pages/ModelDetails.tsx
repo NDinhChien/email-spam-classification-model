@@ -3,6 +3,7 @@ import ConstructionRoundedIcon from "@mui/icons-material/ConstructionRounded";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { useModelcontext } from "./Model";
 import { useState } from "react";
+import { FlexBox } from "./Home";
 
 export const Counter = ({
 	min,
@@ -61,19 +62,10 @@ export const Counter = ({
 	);
 };
 
-import * as React from "react";
-import Stack from "@mui/material/Stack";
-
 export default function () {
 	return (
-		<Stack direction="row" spacing={2}>
-			<Button color="secondary">Secondary</Button>
-			<Button variant="contained" color="success">
-				100% Success
-			</Button>
-			<Button variant="outlined" color="error">
-				Error
-			</Button>
-		</Stack>
+		<FlexBox>
+			<Typography>{"Developing..."}</Typography>
+		</FlexBox>
 	);
 }

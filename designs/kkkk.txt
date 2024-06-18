@@ -1,6 +1,0 @@
-The expected type comes from property 'formik' which is declared here on type 'IntrinsicAttributes & { formik: { initialValues: object; initialErrors: FormikErrors<unknown>; initialTouched: FormikTouched<unknown>; initialStatus: any; ... 33 more ...; submitCount: number; }; ... 4 more ...; isLoading: boolean | null; }'
-
-
-"> div": { width: (others as any).width || "auto" } 
-
-, marginLeft: "5px" 

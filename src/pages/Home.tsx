@@ -143,7 +143,10 @@ const MoreInfo = () => {
 			<>
 				<Typography>
 					{"1. Clone the project "}
-					<CustomLink href="" text="email-spam-classification" />
+					<CustomLink
+						href="https://github.com/NDinhChien/email-spam-classification-model"
+						text="email-spam-classification"
+					/>
 				</Typography>
 			</>,
 		),
