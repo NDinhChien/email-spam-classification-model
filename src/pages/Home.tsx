@@ -27,14 +27,16 @@ export const FlexBox = ({
 	direction,
 	justifyContent,
 	childSt = {},
+	st = {},
 }: {
 	children: JSX.Element | JSX.Element[];
 	direction?: "row" | "column";
 	justifyContent?: "center" | "flex-end";
 	childSt?: SxProps<Theme>;
+	st?: SxProps<Theme>;
 }) => (
 	<Box
-		sx={{ width: "100%", "> div": { ...(childSt as any) } }}
+		sx={{ width: "100%", "> div": { ...(childSt as any) }, ...st }}
 		display="flex"
 		flexDirection={direction || "row"}
 		justifyContent={justifyContent || "center"}
@@ -47,6 +49,7 @@ export const FlexBox = ({
 const boldStyle = {
 	fontWeight: "bold",
 	marginBottom: 1,
+	textAlign: "center",
 };
 export type Props = Record<string, any>;
 

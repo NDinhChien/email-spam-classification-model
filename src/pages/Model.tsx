@@ -93,7 +93,7 @@ const Setup = () => {
 		},
 	});
 
-	const keys = Object.keys(serverUrlSchema.fields).reverse();
+	const keys = Object.keys(serverUrlSchema.fields);
 
 	return (
 		<>
@@ -131,12 +131,15 @@ const Ham = ({ preText }: { preText?: number | string }) => {
 	);
 };
 
-const emptyArray = (n: number, defaultValue: object) => {
-	let arr = [];
-	for (let i = 0; i < n; i++) arr.push({ ...defaultValue });
-	return arr;
-};
-const CenteredBox = ({ children, last }: { last: boolean; children: JSX.Element }) => {
+export const CenteredBox = ({
+	children,
+	last,
+	st,
+}: {
+	last?: boolean;
+	children: JSX.Element;
+	st?: SxProps<Theme>;
+}) => {
 	return (
 		<Box
 			sx={{
@@ -147,6 +150,7 @@ const CenteredBox = ({ children, last }: { last: boolean; children: JSX.Element 
 				height: "103px",
 				marginTop: "12px",
 				marginBottom: last ? "45px" : "0px",
+				...((st as any) || {}),
 			}}
 		>
 			{children}
@@ -154,25 +158,32 @@ const CenteredBox = ({ children, last }: { last: boolean; children: JSX.Element 
 	);
 };
 
-const PredicResult = ({
+export const PredicResult = ({
 	isLoading,
 	result,
-	percentile,
 }: {
 	isLoading: boolean | null;
-	result?: "Ham" | "Spam";
-	percentile: number;
+	result?: { result: "Ham" | "Spam"; percentile: number };
 }) => {
 	if (isLoading === false && result) {
-		return result === "Ham" ? <Ham preText={percentile} /> : <Spam preText={percentile} />;
+		return result.result === "Ham" ? (
+			<Ham preText={result.percentile} />
+		) : (
+			<Spam preText={result.percentile} />
+		);
 	}
 	if (isLoading === true) return <LoadingBtn />;
 
 	return <Typography sx={{ color: "#787878" }}>Unknown</Typography>;
 };
 
-const extractStatistics = (results: { result?: "Ham" | "Spam"; percentile?: number }[]): any => {
-	if (!results || !results[0] || !results[0].result) return null;
+const extractStatistics = (
+	response: Record<string, { result: "Ham" | "Spam"; percentile: number }> | null,
+): any => {
+	if (!response) return {};
+	const results = Object.values(response);
+
+	if (!results || !results[0] || !results[0].result) return {};
 	let nHam = 0;
 	let nSpam = 0;
 	let n = 0;
@@ -183,46 +194,6 @@ const extractStatistics = (results: { result?: "Ham" | "Spam"; percentile?: numb
 	});
 
 	return { nHam, nSpam, n, duration };
-};
-
-const Statistics = ({ statistics }: { statistics: any }) => {
-	if (!statistics) return <></>;
-
-	const { nHam, nSpam, n, duration } = statistics;
-	return (
-		<FlexBox direction="column">
-			<Box>
-				<Typography>SUMARY</Typography>
-			</Box>
-			<Box>
-				<Typography>
-					<Spam preText={`${nSpam}/${n}`} /> <Ham preText={`${nHam}/${n}`} />
-					<BoldTypo>{`IN ${duration} ms`}</BoldTypo>
-				</Typography>
-			</Box>
-		</FlexBox>
-	);
-};
-
-const Category = ({
-	isLoading,
-	results,
-}: {
-	isLoading: boolean | null;
-	results: { result?: "Ham" | "Spam"; percentile?: number }[];
-}) => {
-	return (
-		results && (
-			<>
-				{results.map(({ result, percentile }, index) => (
-					<CenteredBox last={!!(index == results.length - 1)}>
-						<PredicResult isLoading={isLoading} result={result!} percentile={percentile!} />
-					</CenteredBox>
-				))}
-				{<Statistics statistics={extractStatistics(results)} />}
-			</>
-		)
-	);
 };
 
 const getEmailSchema = (n: number) => {
@@ -256,7 +227,10 @@ const PredictInOut = () => {
 	const [holders, setHolders] = useState<any>(getHolders(1));
 	const [isLoading, setIsLoading] = useState<boolean | null>(null);
 
-	const [results, setResults] = useState<{ result?: "Ham" | "Spam"; percentile?: number }[]>([]);
+	const [response, setResponse] = useState<Record<
+		string,
+		{ result: "Ham" | "Spam"; percentile: number }
+	> | null>(null);
 
 	const { startCreateForm, numberOfSamples, serverUrl } = useModelcontext();
 
@@ -277,7 +251,7 @@ const PredictInOut = () => {
 				.then((response) => {
 					console.log(values);
 					console.log(response.data);
-					setResults(Object.values(response.data));
+					setResponse(response.data);
 					duration = response.headers["request-duration"];
 					setIsLoading(false);
 				})
@@ -291,28 +265,45 @@ const PredictInOut = () => {
 		if (startCreateForm === true && numberOfSamples >= 1) {
 			setInput(getEmailSchema(numberOfSamples));
 			setHolders(getHolders(numberOfSamples));
-			setResults(emptyArray(numberOfSamples, {}));
 			console.log("oke", numberOfSamples);
+			setResponse(null);
 		}
 	}, [startCreateForm, numberOfSamples]);
 
 	const keys = Object.keys(input.fields);
+
+	const Statistics = () => {
+		if (!response) return <></>;
+
+		const { nHam, nSpam, n, duration } = extractStatistics(response);
+
+		return (
+			<FlexBox direction="row" st={{ "> button": { marginRight: "5px" } }}>
+				<Button variant="outlined" sx={{ border: "none" }}>
+					<BoldTypo border={"none"} marginBottom="0px">
+						{"SUMMARY"}
+					</BoldTypo>
+				</Button>
+				<Spam preText={`${nSpam}/${n}`} />
+				<Ham preText={`${nHam}/${n}`} />
+				<Button variant="outlined">{`IN ${duration} ms`}</Button>
+			</FlexBox>
+		);
+	};
+
 	return (
 		<FlexBox childSt={{ textAlign: "center" }}>
-			<Box sx={{ width: "70%" }}>
-				<FormikForm
-					formik={formik}
-					inputSt={{ multiline: true, maxRows: 5, minRows: 5 }}
-					isLoading={isLoading}
-					submitDisp={"Predict"}
-					holders={holders}
-					keys={keys as any}
-					isMain={true}
-				/>
-			</Box>
-			<Box sx={{ width: "30%" }}>
-				<Category isLoading={isLoading} results={results} />
-			</Box>
+			<FormikForm
+				formik={formik}
+				inputSt={{ multiline: true, maxRows: 5, minRows: 5 }}
+				isLoading={isLoading}
+				submitDisp={"Predict"}
+				holders={holders}
+				keys={keys as any}
+				isMain={true}
+				response={response}
+				Statistics={<Statistics />}
+			/>
 		</FlexBox>
 	);
 };
