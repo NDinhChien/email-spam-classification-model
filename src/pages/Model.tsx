@@ -11,7 +11,7 @@ import { Theme } from "@emotion/react";
 import { FormikForm, FormikType, LoadingBtn } from "../components/FormikForm";
 import axi from "axios";
 import React, { useEffect, useState } from "react";
-import { Counter } from "./ModelDetails";
+import { Counter, RandomData } from "./ModelDetails";
 const axios = axi.create();
 
 axios.interceptors.request.use((config) => {
@@ -227,12 +227,8 @@ const PredictInOut = () => {
 	const [holders, setHolders] = useState<any>(getHolders(1));
 	const [isLoading, setIsLoading] = useState<boolean | null>(null);
 
-	const [response, setResponse] = useState<Record<
-		string,
-		{ result: "Ham" | "Spam"; percentile: number }
-	> | null>(null);
-
-	const { startCreateForm, numberOfSamples, serverUrl } = useModelcontext();
+	const { startCreateForm, numberOfSamples, serverUrl, defaultValues, response, setResponse } =
+		useModelcontext();
 
 	const formik = useFormik({
 		initialValues: {},
@@ -261,12 +257,18 @@ const PredictInOut = () => {
 				});
 		},
 	});
+
+	useEffect(() => {
+		if (formik) {
+			formik.setValues(defaultValues!);
+			// console.log()
+		}
+	}, [defaultValues]);
 	useEffect(() => {
 		if (startCreateForm === true && numberOfSamples >= 1) {
 			setInput(getEmailSchema(numberOfSamples));
 			setHolders(getHolders(numberOfSamples));
 			console.log("oke", numberOfSamples);
-			setResponse(null);
 		}
 	}, [startCreateForm, numberOfSamples]);
 
@@ -312,7 +314,9 @@ const Column = () => {
 	return (
 		<FlexBox childSt={{ textAlign: "center" }}>
 			<Box sx={{ width: "70%" }}>
-				EMAILS <Counter min={1} max={10} title="Set" />
+				EMAILS
+				<RandomData />
+				<Counter min={1} max={10} title="Set" />
 			</Box>
 			<Box sx={{ width: "30%" }}>PREDICTS</Box>
 		</FlexBox>
@@ -326,7 +330,16 @@ export interface ModelContextInfo {
 	setNumberOfSamples: (n: number) => void;
 	startCreateForm: boolean;
 	setStartCreateForm: (b: boolean) => void;
+	data: { v2: string }[];
+	setData: (data: DataType) => void;
+	defaultValues: Record<string, string> | null;
+	setDefaultValues: (values: Record<string, string>) => void;
+	response: ResponseType;
+	setResponse: (response: ResponseType) => void;
 }
+type DataType = { v2: string }[];
+export type ResponseType = Record<string, { result: "Ham" | "Spam"; percentile: number }> | null;
+
 export const ModelContext = React.createContext<ModelContextInfo>({
 	serverUrl: "",
 	setServerUrl: (s: string) => {},
@@ -334,12 +347,21 @@ export const ModelContext = React.createContext<ModelContextInfo>({
 	setNumberOfSamples: (n: number) => {},
 	startCreateForm: false,
 	setStartCreateForm: (b: boolean) => {},
+	data: [],
+	setData: (data: DataType) => {},
+	defaultValues: null,
+	setDefaultValues: (values: Record<string, string>) => {},
+	response: null,
+	setResponse: (response: ResponseType) => {},
 });
 
 export const ModelProvider = ({ children }: { children: React.ReactNode }) => {
 	const [numberOfSamples, setNumberOfSamples] = useState<number>(1);
 	const [startCreateForm, setStartCreateForm] = useState<boolean>(false);
 	const [serverUrl, setServerUrl] = useState<string>("");
+	const [data, setData] = useState<DataType>([]);
+	const [defaultValues, setDefaultValues] = useState<Record<string, string> | null>(null);
+	const [response, setResponse] = useState<ResponseType>(null);
 	return (
 		<ModelContext.Provider
 			value={{
@@ -349,6 +371,12 @@ export const ModelProvider = ({ children }: { children: React.ReactNode }) => {
 				setStartCreateForm,
 				serverUrl,
 				setServerUrl,
+				data,
+				setData,
+				defaultValues,
+				setDefaultValues,
+				response,
+				setResponse,
 			}}
 		>
 			{children}

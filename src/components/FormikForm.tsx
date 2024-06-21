@@ -42,7 +42,7 @@ export function FormikTextField<T extends object>({
 				name={name as any}
 				label={name as any}
 				placeholder={placeholder}
-				value={formik.values[name]}
+				value={(formik.values || {})[name]}
 				onChange={formik.handleChange}
 				onBlur={formik.handleBlur}
 				error={formik.touched[name] && Boolean(formik.errors[name])}
