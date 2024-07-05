@@ -11,5 +11,10 @@ export default defineConfig((configEnv) => {
 				generateScopedName: isDevelopment ? "[name]__[local]__[hash:base64:5]" : "[hash:base64:5]",
 			},
 		},
+		build: {
+			rollupOptions: {
+				// https://rollupjs.org/configuration-options/
+			},
+		},
 	};
 });
